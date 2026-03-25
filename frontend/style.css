@@ -30,7 +30,7 @@ button.danger { background: #dc3545; }
 .note-item h4 { margin: 0 0 5px 0; }
 .note-item p { margin: 0; color: #555; }
 #auth-message { color: #dc3545; font-size: 0.9em; }
-/* Note Action Buttons Styling */
+
 .note-item {
     display: flex;
     justify-content: space-between;
@@ -56,7 +56,7 @@ button.danger { background: #dc3545; }
 }
 
 .edit-btn {
-    background: #28a745; /* Green edit color */
+    background: #28a745; 
 }
 
 .edit-btn:hover {
