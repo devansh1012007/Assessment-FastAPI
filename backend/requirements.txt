@@ -1,0 +1,14 @@
+# --- Web Framework & Server ---
+fastapi          # The core asynchronous API framework
+uvicorn[standard] # The lightning-fast ASGI server to run FastAPI
+
+# --- Database & ORM ---
+sqlalchemy        # The industry-standard ORM for interacting with the database
+asyncpg          # The asynchronous PostgreSQL database driver for high concurrency
+
+# --- Security & Authentication ---
+python-jose[cryptography] # Generates and decodes secure JWT tokens
+passlib[bcrypt]         # Handles secure password hashing and verification
+python-multipart
+# --- Utilities ---
+python-dotenv==1.0.1      # Loads environment variables from a .env file (useful for local testing)
