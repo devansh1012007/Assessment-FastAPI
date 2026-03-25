@@ -8,7 +8,10 @@ asyncpg          # The asynchronous PostgreSQL database driver for high concurre
 
 # --- Security & Authentication ---
 python-jose[cryptography] # Generates and decodes secure JWT tokens
-passlib[bcrypt]         # Handles secure password hashing and verification
+bcrypt       # Handles secure password hashing and verification
 python-multipart
 # --- Utilities ---
 python-dotenv==1.0.1      # Loads environment variables from a .env file (useful for local testing)
+
+alembic
+

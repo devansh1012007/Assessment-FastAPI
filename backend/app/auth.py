@@ -1,13 +1,20 @@
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+import bcrypt
 
 SECRET_KEY = "SUPER_SECRET_KEY_FOR_ASSIGNMENT"
 ALGORITHM = "HS256"
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def hash_pass(password): return pwd_context.hash(password)
-def verify_pass(plain, hashed): return pwd_context.verify(plain, hashed)
+def hash_pass(password: str) -> str:
+    # bcrypt requires bytes, so we encode the string to utf-8
+    salt = bcrypt.gensalt()
+    hashed_bytes = bcrypt.hashpw(password.encode('utf-8'), salt)
+    # Return as a string to store in the database
+    return hashed_bytes.decode('utf-8')
+
+def verify_pass(plain: str, hashed: str) -> bool:
+    # Encode both strings to bytes for comparison
+    return bcrypt.checkpw(plain.encode('utf-8'), hashed.encode('utf-8'))
 
 def create_token(data: dict):
     to_encode = data.copy()
