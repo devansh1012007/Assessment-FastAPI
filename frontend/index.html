@@ -14,6 +14,13 @@
             <h2>Login or Register</h2>
             <input type="text" id="username" placeholder="Username" required>
             <input type="password" id="password" placeholder="Password" required>
+            
+            <label for="role-select">Role:</label>
+            <select id="role-select">
+                <option value="user">Standard User</option>
+                <option value="admin">Administrator</option>
+            </select>
+
             <div class="btn-group">
                 <button id="login-btn">Login</button>
                 <button id="register-btn" class="secondary">Register</button>
@@ -26,6 +33,14 @@
                 <h2>My Notes</h2>
                 <button id="logout-btn" class="danger">Logout</button>
             </div>
+
+            <div id="admin-panel" class="admin-panel hidden">
+                <div class="admin-header">
+                    <h3 class="admin-title">👑 Admin Panel</h3>
+                    <button id="fetch-users-btn" class="view-users-btn">View All Users</button>
+                </div>
+                <div id="users-list" class="users-list"></div>
+            </div>
             
             <div class="create-note">
                 <input type="text" id="note-title" placeholder="Note Title">
@@ -33,8 +48,7 @@
                 <button id="add-note-btn">Save Note</button>
             </div>
 
-            <div id="notes-list">
-                </div>
+            <div id="notes-list"></div>
         </div>
     </div>
 

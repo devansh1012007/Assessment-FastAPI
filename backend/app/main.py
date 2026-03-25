@@ -29,7 +29,6 @@ class UserCreate(BaseModel):
     role: Optional[str] = "user"
 
 
-# --- Dependencies ---
 async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -47,7 +46,6 @@ async def get_current_admin(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Admin privileges required")
     return current_user
 
-# --- Authentication Endpoints ---
 @app.post("/api/v1/register")
 async def register(user: UserCreate, db=Depends(get_db)):
     # Truncate to 72 chars to satisfy Bcrypt, though standard passwords rarely hit this
@@ -63,7 +61,6 @@ async def register(user: UserCreate, db=Depends(get_db)):
     await db.commit()
     return {"message": "User registered successfully"}
 
-# FIXED: Now uses OAuth2PasswordRequestForm to support Swagger UI
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.username == form_data.username))
@@ -97,7 +94,7 @@ async def delete_note(note_id: int, current_user: User = Depends(get_current_use
     await db.commit()
     return {"message": "Note deleted successfully"}
 
-# make update
+
 @app.put("/api/v1/notes/{note_id}")
 async def update_note(
     note_id: int, 
@@ -122,6 +119,7 @@ async def update_note(
     
     return {"message": "Note updated successfully", "note": {"id": note.id, "title": note.title}}
 # --- Admin Only Endpoint (RBAC Demonstration) --- (role based access control)
+
 @app.get("/api/v1/admin/all-users")
 async def get_all_users(admin_user: User = Depends(get_current_admin), db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User))
