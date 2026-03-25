@@ -30,3 +30,35 @@ button.danger { background: #dc3545; }
 .note-item h4 { margin: 0 0 5px 0; }
 .note-item p { margin: 0; color: #555; }
 #auth-message { color: #dc3545; font-size: 0.9em; }
+/* Note Action Buttons Styling */
+.note-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.note-content-wrapper {
+    flex-grow: 1;
+    padding-right: 15px;
+}
+
+.note-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 80px;
+}
+
+.note-actions button {
+    padding: 6px 10px;
+    font-size: 0.85em;
+    width: 100%;
+}
+
+.edit-btn {
+    background: #28a745; /* Green edit color */
+}
+
+.edit-btn:hover {
+    background: #218838;
+}

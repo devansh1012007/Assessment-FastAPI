@@ -98,7 +98,29 @@ async def delete_note(note_id: int, current_user: User = Depends(get_current_use
     return {"message": "Note deleted successfully"}
 
 # make update
-
+@app.put("/api/v1/notes/{note_id}")
+async def update_note(
+    note_id: int, 
+    data = Body(...), 
+    current_user: User = Depends(get_current_user), 
+    db: AsyncSession = Depends(get_db)
+):
+    # 1. Find the note ensuring it belongs to the current user
+    result = await db.execute(select(Note).where(Note.id == note_id, Note.owner_id == current_user.id))
+    note = result.scalars().first()
+    
+    # 2. Return 404 if the note doesn't exist or doesn't belong to the user
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    
+    # 3. Update the fields
+    note.title = data['title']
+    note.content = data['content']
+    
+    # 4. Save changes to the database
+    await db.commit()
+    
+    return {"message": "Note updated successfully", "note": {"id": note.id, "title": note.title}}
 # --- Admin Only Endpoint (RBAC Demonstration) --- (role based access control)
 @app.get("/api/v1/admin/all-users")
 async def get_all_users(admin_user: User = Depends(get_current_admin), db: AsyncSession = Depends(get_db)):
