@@ -14,6 +14,7 @@ from typing import Optional
 
 app = FastAPI(title="PrimeTrade Secure Notes API")
 
+# log
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -57,7 +58,7 @@ async def get_current_admin(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Admin privileges required")
     return current_user
 
-# --- Authentication Endpoints ---
+# auth
 @app.post("/api/v1/register")
 async def register(user: UserCreate, db=Depends(get_db)):
     logger.info(f"Registration attempt for new user: '{user.username}'")
@@ -84,7 +85,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
     user = result.scalars().first()
     
     if not user or not verify_pass(form_data.password, user.hashed_password):
-        # Use warning level for suspicious/failed activity
         logger.warning(f"Failed login: Incorrect credentials for '{form_data.username}'")
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     
@@ -92,7 +92,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
     access_token = create_token(data={"sub": user.username, "role": user.role})
     return {"access_token": access_token, "token_type": "bearer"}
 
-# --- Note CRUD Endpoints ---
+# notes endpoint
 @app.get("/api/v1/notes")
 async def read_notes(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     logger.info(f"User '{current_user.username}' is fetching their notes.")
@@ -145,7 +145,7 @@ async def delete_note(note_id: int, current_user: User = Depends(get_current_use
     logger.info(f"Success: Note ID {note_id} deleted by '{current_user.username}'.")
     return {"message": "Note deleted successfully"}
 
-# --- Admin Only Endpoint (RBAC Demonstration) --- (role based access control)
+# admin
 
 @app.get("/api/v1/admin/all-users")
 async def get_all_users(admin_user: User = Depends(get_current_admin), db: AsyncSession = Depends(get_db)):
